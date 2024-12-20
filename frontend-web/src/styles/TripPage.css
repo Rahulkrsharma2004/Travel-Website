@@ -1,0 +1,39 @@
+.trip-page {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .trip-page h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .trip-page p {
+    font-size: 1.2em;
+    line-height: 1.5;
+    margin: 10px 0;
+  }
+  
+  .book-button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .book-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .loading {
+    font-size: 1.5em;
+    text-align: center;
+    padding: 20px;
+  }
