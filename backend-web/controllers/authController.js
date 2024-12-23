@@ -1,11 +1,11 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 dotenv.config();
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '7d',
+    expiresIn: "7d",
   });
 };
 
@@ -16,19 +16,20 @@ exports.register = async (req, res) => {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: "User already exists" });
     }
 
-    const user = await User.create({
+    const user = new User({
       name,
       email,
       password,
       isOrganizer,
     });
+    await user.save();
 
     if (user) {
       res.status(201).json({
-        message: 'Registration successful!',
+        message: "Registration successful!",
         user: {
           _id: user._id,
           name: user.name,
@@ -38,10 +39,10 @@ exports.register = async (req, res) => {
         },
       });
     } else {
-      res.status(400).json({ message: 'Invalid user data' });
+      res.status(400).json({ message: "Invalid user data" });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server error. Please try again later.' });
+    res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
 
@@ -53,7 +54,7 @@ exports.login = async (req, res) => {
 
     if (user && (await user.matchPassword(password))) {
       res.json({
-        message: 'Login successful!',
+        message: "Login successful!",
         user: {
           _id: user._id,
           name: user.name,
@@ -63,10 +64,10 @@ exports.login = async (req, res) => {
         },
       });
     } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+      res.status(401).json({ message: "Invalid email or password" });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server error. Please try again later.' });
+    res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
 
@@ -75,7 +76,7 @@ exports.getUserProfile = async (req, res) => {
     const user = await User.findById(req.user._id);
     if (user) {
       res.json({
-        message: 'User profile retrieved successfully!',
+        message: "User profile retrieved successfully!",
         user: {
           _id: user._id,
           name: user.name,
@@ -84,9 +85,9 @@ exports.getUserProfile = async (req, res) => {
         },
       });
     } else {
-      res.status(404).json({ message: 'User not found' });
+      res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server error. Please try again later.' });
+    res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
