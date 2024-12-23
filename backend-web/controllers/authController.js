@@ -11,59 +11,82 @@ const generateToken = (id) => {
 
 exports.register = async (req, res) => {
   const { name, email, password, isOrganizer } = req.body;
-  const userExists = await User.findOne({ email });
 
-  if (userExists) {
-    return res.status(400).json({ message: 'User already exists' });
-  }
+  try {
+    const userExists = await User.findOne({ email });
 
-  const user = await User.create({
-    name,
-    email,
-    password,
-    isOrganizer,
-  });
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
 
-  if (user) {
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isOrganizer: user.isOrganizer,
-      token: generateToken(user._id),
+    const user = await User.create({
+      name,
+      email,
+      password,
+      isOrganizer,
     });
-  } else {
-    res.status(400).json({ message: 'Invalid user data' });
+
+    if (user) {
+      res.status(201).json({
+        message: 'Registration successful!',
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          isOrganizer: user.isOrganizer,
+          token: generateToken(user._id),
+        },
+      });
+    } else {
+      res.status(400).json({ message: 'Invalid user data' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error. Please try again later.' });
   }
 };
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
 
-  if (user && (await user.matchPassword(password))) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isOrganizer: user.isOrganizer,
-      token: generateToken(user._id),
-    });
-  } else {
-    res.status(401).json({ message: 'Invalid email or password' });
+  try {
+    const user = await User.findOne({ email });
+
+    if (user && (await user.matchPassword(password))) {
+      res.json({
+        message: 'Login successful!',
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          isOrganizer: user.isOrganizer,
+          token: generateToken(user._id),
+        },
+      });
+    } else {
+      res.status(401).json({ message: 'Invalid email or password' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error. Please try again later.' });
   }
 };
 
 exports.getUserProfile = async (req, res) => {
-  const user = await User.findById(req.user._id);
-  if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isOrganizer: user.isOrganizer,
-    });
-  } else {
-    res.status(404).json({ message: 'User not found' });
+  try {
+    const user = await User.findById(req.user._id);
+    if (user) {
+      res.json({
+        message: 'User profile retrieved successfully!',
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          isOrganizer: user.isOrganizer,
+        },
+      });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error. Please try again later.' });
   }
 };
