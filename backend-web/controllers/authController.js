@@ -11,14 +11,11 @@ const generateToken = (id) => {
 
 exports.register = async (req, res) => {
   const { name, email, password, isOrganizer } = req.body;
-
   try {
     const userExists = await User.findOne({ email });
-
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
-
     const user = new User({
       name,
       email,
@@ -26,7 +23,6 @@ exports.register = async (req, res) => {
       isOrganizer,
     });
     await user.save();
-
     if (user) {
       res.status(201).json({
         message: "Registration successful!",
@@ -48,12 +44,13 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password, isOrganizer } = req.body;
-
   try {
     const user = await User.findOne({ email });
     if (user) {
       if (user.isOrganizer !== isOrganizer) {
-        return res.status(401).json({ message: "You are not registered as an organizer" });
+        return res
+          .status(401)
+          .json({ message: "You are not registered as an organizer" });
       }
       if (await user.matchPassword(password)) {
         return res.json({
@@ -74,7 +71,6 @@ exports.login = async (req, res) => {
   }
 };
 
-
 exports.getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -91,6 +87,14 @@ exports.getUserProfile = async (req, res) => {
     } else {
       res.status(404).json({ message: "User not found" });
     }
+  } catch (error) {
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
+
+exports.logout = async (req, res) => {
+  try {
+    res.status(200).json({ message: "Logout successful!" });
   } catch (error) {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
