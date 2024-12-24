@@ -6,20 +6,20 @@ export const AuthProvider = ({ children }) => {
   const [organizer, setOrganizer] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isOrganizerLoggedIn, setIsOrganizerLoggedIn] = useState(false);
-  const [userToken, setUserToken] = useState("");
-  const [organizerToken, setOrganizerToken] = useState("");
+  const [allUserData, setAllUserData] = useState({});
+  const [allOrganizerData, setAllOrganizerData] = useState({});
 
   useEffect(() => {
     const storedOrganizer = localStorage.getItem("organizer") === "true";
     const storedIsUserLoggedIn = localStorage.getItem("isUserLoggedIn") === "true";
     const storedIsOrganizerLoggedIn = localStorage.getItem("isOrganizerLoggedIn") === "true";
-    const storedUserToken = localStorage.getItem("userToken") || "";
-    const storedOrganizerToken = localStorage.getItem("organizerToken") || "";
+    const storedUserData = localStorage.getItem("allUserData") || {};
+    const storedOrganizerData = localStorage.getItem("allOrganizerData") || {};
     setOrganizer(storedOrganizer);
     setIsUserLoggedIn(storedIsUserLoggedIn);
     setIsOrganizerLoggedIn(storedIsOrganizerLoggedIn);
-    setUserToken(storedUserToken);
-    setOrganizerToken(storedOrganizerToken);
+    setAllUserData(storedUserData);
+    setAllOrganizerData(storedOrganizerData);
   }, []);
 
   return (
@@ -27,12 +27,12 @@ export const AuthProvider = ({ children }) => {
       value={{
         organizer,
         setOrganizer,
+        allUserData,
+        setAllUserData,
+        allOrganizerData,
+        setAllOrganizerData,
         isUserLoggedIn,
         setIsUserLoggedIn,
-        userToken,
-        setUserToken,
-        organizerToken,
-        setOrganizerToken,
         isOrganizerLoggedIn,
         setIsOrganizerLoggedIn,
       }}

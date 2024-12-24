@@ -23,9 +23,11 @@ const OrganizerDashboard = () => {
   };
 
   const createTrip = async (trip) => {
+    console.log('Creating trip:', trip);
     try {
       const response = await axios.post('https://travel-web-backend.vercel.app/trips/create/', trip, { withCredentials: true });
-      setTrips([...trips, response.data]);
+      console.log(response);
+      setTrips(prevTrips => [...prevTrips, response.data]);
       alert('Trip created successfully!');
     } catch (error) {
       console.error('Error creating trip:', error);
@@ -35,8 +37,8 @@ const OrganizerDashboard = () => {
 
   const updateTrip = async (trip) => {
     try {
-      const response = await axios.put(`https://travel-web-backend.vercel.app/trips/update/${trip.id}`, trip, { withCredentials: true });
-      setTrips(trips.map(t => t.id === trip.id ? response.data : t));
+      const response = await axios.put(`https://travel-web-backend.vercel.app/trips/update/${trip._id}`, trip, { withCredentials: true });
+      setTrips(prevTrips => prevTrips.map(t => t._id === trip._id ? response.data : t));
       setSelectedTrip(null);
       alert('Trip updated successfully!');
     } catch (error) {
@@ -46,9 +48,10 @@ const OrganizerDashboard = () => {
   };
 
   const deleteTrip = async (id) => {
+    console.log('Deleting trip:', id);
     try {
       await axios.delete(`https://travel-web-backend.vercel.app/trips/delete/${id}`, { withCredentials: true });
-      setTrips(trips.filter(t => t.id !== id));
+      setTrips(prevTrips => prevTrips.filter(t => t._id !== id));
       alert('Trip deleted successfully!');
     } catch (error) {
       console.error('Error deleting trip:', error);

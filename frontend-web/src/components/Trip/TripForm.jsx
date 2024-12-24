@@ -9,7 +9,7 @@ const TripForm = ({ createTrip, updateTrip, selectedTrip, setSelectedTrip }) => 
     price: '',
     availableSlots: '',
     cancellationPolicy: '',
-    imageUrl: ''
+    image: ''
   });
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const TripForm = ({ createTrip, updateTrip, selectedTrip, setSelectedTrip }) => 
         price: '',
         availableSlots: '',
         cancellationPolicy: '',
-        imageUrl: ''
+        image: ''
       });
     }
   }, [selectedTrip]);
@@ -41,6 +41,16 @@ const TripForm = ({ createTrip, updateTrip, selectedTrip, setSelectedTrip }) => 
     } else {
       createTrip(trip);
     }
+    setTrip({
+      name: '',
+      description: '',
+      startDate: '',
+      endDate: '',
+      price: '',
+      availableSlots: '',
+      cancellationPolicy: '',
+      image: ''
+    });
   };
 
   const handleCancel = () => {
@@ -53,7 +63,7 @@ const TripForm = ({ createTrip, updateTrip, selectedTrip, setSelectedTrip }) => 
       price: '',
       availableSlots: '',
       cancellationPolicy: '',
-      imageUrl: ''
+      image: ''
     });
   };
 
@@ -142,8 +152,8 @@ const TripForm = ({ createTrip, updateTrip, selectedTrip, setSelectedTrip }) => 
             <label className="block text-sm font-bold mb-2">Image URL</label>
             <input
               type="text"
-              name="imageUrl"
-              value={trip.imageUrl}
+              name="image"
+              value={trip.image}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required

@@ -26,15 +26,13 @@ const Login = () => {
         { withCredentials: true }
       );
       console.log(response);
-      const token = response.data.user.token;
       if (
         response.data.message === "Login successful!" &&
         response.data.user.isOrganizer === true
       ) {
         setIsOrganizerLoggedIn(true);
         localStorage.setItem("isOrganizerLoggedIn", true);
-        localStorage.setItem("isOrganizerLoggedIn", true);
-        localStorage.setItem("organizerToken", token);
+        localStorage.setItem("allOrganizerData", response.data.user);
         toast.success("Organizer Login successful!");
         alert("Organizer Login successful!");
         navigate("/organizer-dashboard");
@@ -44,7 +42,7 @@ const Login = () => {
       ) {
         setIsUserLoggedIn(true);
         localStorage.setItem("isUserLoggedIn", true);
-        localStorage.setItem("userToken", token);
+        localStorage.setItem("allUserData", response.data.user);
         toast.success("User Login successful!");
         alert("User Login successful!");
         navigate("/user-dashboard");
