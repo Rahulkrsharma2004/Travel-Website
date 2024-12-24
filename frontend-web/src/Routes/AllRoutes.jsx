@@ -6,7 +6,7 @@ import Footer from "../components/Layout/Footer";
 import Login from "../components/Auth/Login";
 import Signup from "../components/Auth/Signup";
 import LandingPage from "../pages/LandingPage";
-import UserDashboard from "../components/Dashboard/UserDashboard.jsX";
+import UserDashboard from "../components/Dashboard/UserDashboard.jsx";
 import OrganizerDashboard from "../components/Dashboard/OrganizerDashboard";
 
 function AllRoutes() {
