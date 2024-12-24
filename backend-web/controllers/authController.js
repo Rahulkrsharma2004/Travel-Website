@@ -47,29 +47,33 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, isOrganizer } = req.body;
 
   try {
     const user = await User.findOne({ email });
-
-    if (user && (await user.matchPassword(password))) {
-      res.json({
-        message: "Login successful!",
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          isOrganizer: user.isOrganizer,
-          token: generateToken(user._id),
-        },
-      });
-    } else {
-      res.status(401).json({ message: "Invalid email or password" });
+    if (user) {
+      if (user.isOrganizer !== isOrganizer) {
+        return res.status(401).json({ message: "You are not registered as an organizer" });
+      }
+      if (await user.matchPassword(password)) {
+        return res.json({
+          message: "Login successful!",
+          user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isOrganizer: user.isOrganizer,
+            token: generateToken(user._id),
+          },
+        });
+      }
     }
+    res.status(401).json({ message: "Invalid email or password" });
   } catch (error) {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
 
 exports.getUserProfile = async (req, res) => {
   try {
