@@ -4,12 +4,13 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const tripRoutes = require("./routes/tripRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
-
 dotenv.config();
 connectDB();
 
 const app = express();
+app.use(cookieParser());
 
 app.use(express.json());
 

@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const tripSchema = new mongoose.Schema({
-  // image: {
-  //   type: String,
-  //   required: true,
-  // },
+  image: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -13,7 +13,11 @@ const tripSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dates: {
+  startDate: {
+    type: String,
+    required: true,
+  },
+  endDate: {
     type: String,
     required: true,
   },

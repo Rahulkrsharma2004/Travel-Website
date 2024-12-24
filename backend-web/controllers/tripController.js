@@ -15,11 +15,13 @@ exports.getTripById = async (req, res) => {
 };
 
 exports.createTrip = async (req, res) => {
-  const { name, description, dates, price, availableSlots, cancellationPolicy } = req.body;
+  const { image,name, description, startDate,endDate, price, availableSlots, cancellationPolicy } = req.body;
   const trip = new Trip({
+    image,
     name,
     description,
-    dates,
+    startDate,
+    endDate,
     price,
     availableSlots,
     cancellationPolicy,
@@ -31,13 +33,15 @@ exports.createTrip = async (req, res) => {
 };
 
 exports.updateTrip = async (req, res) => {
-  const { name, description, dates, price, availableSlots, cancellationPolicy } = req.body;
+  const { image,name, description, startDate,endDate, price, availableSlots, cancellationPolicy } = req.body;
   const trip = await Trip.findById(req.params.id);
 
   if (trip) {
+    trip.image = image;
     trip.name = name;
     trip.description = description;
-    trip.dates = dates;
+    trip.startDate = startDate;
+    trip.endDate = endDate;
     trip.price = price;
     trip.availableSlots = availableSlots;
     trip.cancellationPolicy = cancellationPolicy;
