@@ -34,8 +34,8 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-semibold mb-4">User Dashboard</h1>
+    <div className="container mx-auto p-4 py-64 flex flex-col items-center">
+      <h1 className="text-4xl font-semibold mb-4">User Dashboard</h1>
       {bookings.length === 0 ? (
         <p>No bookings found.</p>
       ) : (
