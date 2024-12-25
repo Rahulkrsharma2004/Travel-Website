@@ -1,27 +1,51 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import TripDetailsModal from "./TripDetailsModal";
 
 const LandingPage = () => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedTrip, setSelectedTrip] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchTrips = async () => {
       try {
-        const response = await axios.get('https://travel-web-backend.vercel.app/trips', { withCredentials: true });
+        const response = await axios.get(
+          "https://travel-web-backend.vercel.app/trips",
+          { withCredentials: true }
+        );
         setTrips(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching trips:', error);
-        alert('Failed to load trips.');
+        console.error("Error fetching trips:", error);
+        alert("Failed to load trips.");
       }
     };
 
     fetchTrips();
   }, []);
+
+  const handleViewDetails = async (tripId) => {
+    try {
+      const response = await axios.get(
+        `https://travel-web-backend.vercel.app/trips/${tripId}`,
+        { withCredentials: true }
+      );
+      setSelectedTrip(response.data);
+      setModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching trip details:", error);
+      alert("Failed to load trip details.");
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedTrip(null);
+  };
 
   return (
     <div className="bg-transparent text-gray-800 font-sans">
@@ -46,62 +70,80 @@ const LandingPage = () => {
       <div className="py-16">
         <div className="container mx-auto text-center">
           <h2 className="text-3xl font-semibold mb-12">Upcoming Trips</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {loading ? (
-              Array(6).fill().map((_, index) => (
-                <div
-                  key={index}
-                  className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition duration-300"
-                >
-                  <Skeleton height={192} />
-                  <div className="p-6">
-                    <Skeleton height={30} width={`60%`} />
-                    <Skeleton height={20} width={`80%`} style={{ margin: '10px 0' }} />
-                    <Skeleton height={20} width={`40%`} />
-                    <Skeleton height={20} width={`70%`} style={{ margin: '10px 0' }} />
-                    <Skeleton height={30} width={`30%`} />
-                  </div>
-                </div>
-              ))
-            ) : (
-              trips.map((trip) => (
-                <div
-                  key={trip._id}
-                  className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition duration-300"
-                >
-                  <img
-                    src={trip.image}
-                    alt={trip.image}
-                    className="w-full h-48 object-cover hover:scale-105 transition duration-300"
-                  />
-                  <div className="p-6">
-                    <h3 className="text-2xl font-semibold mb-2">
-                      {trip.name}
-                    </h3>
-                    <p className="text-yellow-500 font-bold mb-4">
-                      Rs - {trip.price}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Starting on {new Date(trip.startDate).toLocaleDateString('en-GB')}
-                    </p>
-                    <div className="mt-4 flex justify-between">
-                      <Link
-                        to={`/trips/${trip._id}`}
-                        className="text-yellow-500 hover:underline"
-                      >
-                        View Details
-                      </Link>
-                      <button className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300">
-                        Add to Cart
-                      </button>
+          <div className="grid px-5 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {loading
+              ? Array(6)
+                  .fill()
+                  .map((_, index) => (
+                    <div
+                      key={index}
+                      className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition duration-300"
+                    >
+                      <Skeleton height={192} />
+                      <div className="p-6">
+                        <Skeleton height={30} width={`60%`} />
+                        <Skeleton
+                          height={20}
+                          width={`80%`}
+                          style={{ margin: "10px 0" }}
+                        />
+                        <Skeleton height={20} width={`40%`} />
+                        <Skeleton
+                          height={20}
+                          width={`70%`}
+                          style={{ margin: "10px 0" }}
+                        />
+                        <Skeleton height={30} width={`30%`} />
+                      </div>
+                    </div>
+                  ))
+              : trips.map((trip) => (
+                  <div
+                    key={trip._id}
+                    className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition duration-300"
+                  >
+                    <img
+                      src={trip.image}
+                      alt={trip.image}
+                      className="w-full h-48 object-cover hover:scale-105 transition duration-300"
+                    />
+                    <div className="p-6">
+                      <h3 className="text-2xl font-semibold mb-2">
+                        {trip.name}
+                      </h3>
+                      <p className="text-yellow-500 font-bold mb-4">
+                        Rs - {trip.price}
+                      </p>
+                      <p className="text-green-500 mb-4">
+                        Available Slots -
+                          {trip.availableSlots}
+                        
+                      </p>
+                      <p className="text-sm font-bold text-black-500">
+                        Starting on{" "}
+                        {new Date(trip.startDate).toLocaleDateString("en-GB")}
+                      </p>
+                      <div className="mt-4 flex justify-between">
+                        <button
+                          onClick={() => handleViewDetails(trip._id)}
+                          className="text-yellow-500 hover:underline"
+                        >
+                          View Details
+                        </button>
+                        <button className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300">
+                          Add to Cart
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
+                ))}
           </div>
         </div>
       </div>
+
+      {modalOpen && (
+        <TripDetailsModal trip={selectedTrip} onClose={handleCloseModal} />
+      )}
     </div>
   );
 };
