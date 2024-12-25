@@ -13,8 +13,8 @@ export const AuthProvider = ({ children }) => {
     const storedOrganizer = localStorage.getItem("organizer") === "true";
     const storedIsUserLoggedIn = localStorage.getItem("isUserLoggedIn") === "true";
     const storedIsOrganizerLoggedIn = localStorage.getItem("isOrganizerLoggedIn") === "true";
-    const storedUserData = localStorage.getItem("allUserData") || {};
-    const storedOrganizerData = localStorage.getItem("allOrganizerData") || {};
+    const storedUserData = localStorage.getItem("allUserData") || "";
+    const storedOrganizerData = localStorage.getItem("allOrganizerData") || "";
     setOrganizer(storedOrganizer);
     setIsUserLoggedIn(storedIsUserLoggedIn);
     setIsOrganizerLoggedIn(storedIsOrganizerLoggedIn);

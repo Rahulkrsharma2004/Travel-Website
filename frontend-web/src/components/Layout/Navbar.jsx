@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
@@ -28,6 +29,8 @@ const Navbar = () => {
         setIsOrganizerLoggedIn(false);
         localStorage.setItem("organizer", "false");
         localStorage.setItem("isOrganizerLoggedIn", false);
+        localStorage.setItem("allOrganizerData", "");
+        Cookies.remove("token");
         toast.success("Organizer Logout successful!");
         alert("Organizer Logout successful!");
         navigate("/");

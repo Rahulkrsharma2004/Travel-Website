@@ -32,7 +32,7 @@ const Login = () => {
       ) {
         setIsOrganizerLoggedIn(true);
         localStorage.setItem("isOrganizerLoggedIn", true);
-        localStorage.setItem("allOrganizerData", response.data.user);
+        localStorage.setItem("allOrganizerData", response.data.user._id);
         toast.success("Organizer Login successful!");
         alert("Organizer Login successful!");
         navigate("/organizer-dashboard");
@@ -42,7 +42,7 @@ const Login = () => {
       ) {
         setIsUserLoggedIn(true);
         localStorage.setItem("isUserLoggedIn", true);
-        localStorage.setItem("allUserData", response.data.user);
+        localStorage.setItem("allUserData", response.data.user._id);
         toast.success("User Login successful!");
         alert("User Login successful!");
         navigate("/user-dashboard");
@@ -69,7 +69,7 @@ const Login = () => {
           className="w-72 h-auto"
         />
         <form
-          onSubmit={handleLogin} // Submit handler updated to handle both cases
+          onSubmit={handleLogin} 
           className="w-full md:w-80"
         >
           <input
