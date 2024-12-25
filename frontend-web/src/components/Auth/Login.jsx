@@ -9,7 +9,7 @@ import AuthContext from "../../context/AuthContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { organizer, setIsUserLoggedIn, setIsOrganizerLoggedIn } =
+  const { organizer, setIsUserLoggedIn, setIsOrganizerLoggedIn,setUserName,setOrganizerName} =
     useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -30,9 +30,12 @@ const Login = () => {
         response.data.message === "Login successful!" &&
         response.data.user.isOrganizer === true
       ) {
+        let firstName = response.data.user.name.charAt(0).toUpperCase();
         setIsOrganizerLoggedIn(true);
+        setOrganizerName(firstName);
         localStorage.setItem("isOrganizerLoggedIn", true);
-        localStorage.setItem("allOrganizerData", response.data.user._id);
+        localStorage.setItem("organizerID", response.data.user._id);
+        localStorage.setItem("organizerName",firstName);
         toast.success("Organizer Login successful!");
         alert("Organizer Login successful!");
         navigate("/organizer-dashboard");
@@ -40,9 +43,12 @@ const Login = () => {
         response.data.message === "Login successful!" &&
         response.data.user.isOrganizer === false
       ) {
+        let firstName = response.data.user.name.charAt(0).toUpperCase();
         setIsUserLoggedIn(true);
+        setUserName(firstName);
         localStorage.setItem("isUserLoggedIn", true);
-        localStorage.setItem("allUserData", response.data.user._id);
+        localStorage.setItem("userID", response.data.user._id);
+        localStorage.setItem("userName",firstName);
         toast.success("User Login successful!");
         alert("User Login successful!");
         navigate("/");

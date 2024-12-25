@@ -13,6 +13,8 @@ const Navbar = () => {
     setIsOrganizerLoggedIn,
     isUserLoggedIn,
     setIsUserLoggedIn,
+    userName,
+    organizerName,
   } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -81,13 +83,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white p-4 shadow-lg ">
-      <div className="container mx-auto flex items-center justify-between">
+    <nav className="bg-white p-4 shadow-lg">
+      <div className="mx-auto flex items-center justify-between">
         <div className="flex items-center">
           {isOrganizerLoggedIn ? (
-            <div
-              className="text-white text-2xl font-bold tracking-wide"
-            >
+            <div className="text-white text-2xl font-bold tracking-wide">
               <img
                 src="https://explorertours.al/wp-content/uploads/2016/08/explorerlogo.png"
                 alt="Explorer Travel Logo"
@@ -122,6 +122,9 @@ const Navbar = () => {
               >
                 Organizer Logout
               </button>
+              <div className="text-black text-sm font-semibold tracking-wide flex items-center space-x-2 border-2 border-black p-2 px-4 rounded-full">
+                <p className="text-black text-xl">{organizerName}</p>
+              </div>
             </>
           ) : isUserLoggedIn ? (
             <>
@@ -137,6 +140,9 @@ const Navbar = () => {
               >
                 User Logout
               </button>
+              <div className="text-black text-sm font-semibold tracking-wide flex items-center space-x-2 border-2 border-black p-2 px-4 rounded-full">
+                <p className="text-black text-xl">{userName}</p>
+              </div>
             </>
           ) : (
             <>
