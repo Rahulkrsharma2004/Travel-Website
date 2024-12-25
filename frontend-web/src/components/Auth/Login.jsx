@@ -45,7 +45,7 @@ const Login = () => {
         localStorage.setItem("allUserData", response.data.user._id);
         toast.success("User Login successful!");
         alert("User Login successful!");
-        navigate("/user-dashboard");
+        navigate("/");
       }
     } catch (error) {
       if (error.response && error.response.data.message) {

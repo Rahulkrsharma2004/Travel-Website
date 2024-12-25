@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import TripDetailsModal from "./TripDetailsModal";
+import PaymentModal from "./PaymentModal";
+import AuthContext from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const { isUserLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTrips = async () => {
@@ -46,7 +52,18 @@ const LandingPage = () => {
     setSelectedTrip(null);
   };
 
-  const handleBookNow = async (tripId) => {
+  const handleBookNow = (tripId) => {
+    if (!isUserLoggedIn) {
+      alert("You must be login for Booked Trip");
+      navigate("/login");
+    } else {
+      const selectedTrip = trips.find((trip) => trip._id === tripId);
+      setSelectedTrip(selectedTrip);
+      setPaymentModalOpen(true);
+    }
+  };
+
+  const handlePaymentSuccess = async (tripId) => {
     try {
       const response = await axios.post(
         "https://travel-web-backend.vercel.app/bookings/book",
@@ -55,6 +72,8 @@ const LandingPage = () => {
       );
       console.log(response);
       alert("Trip booked successfully!");
+      setPaymentModalOpen(false);
+      setSelectedTrip(null);
     } catch (error) {
       console.error("Error booking trip:", error);
       alert("Failed to book trip.");
@@ -63,13 +82,20 @@ const LandingPage = () => {
 
   return (
     <div className="bg-transparent text-gray-800 font-sans">
-      <div className="text-yellow-200 py-10 text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to TravelExplorer</h1>
-        <p className="text-xl">
-          Your gateway to the best travel experiences around the world.
-        </p>
-      </div>
-
+      {isUserLoggedIn ? (
+        <div className="text-yellow-200 py-10 text-center">
+          <h1 className="text-4xl font-bold">
+            Now you can book your favorite Upcoming Trip !
+          </h1>
+        </div>
+      ) : (
+        <div className="text-yellow-200 py-10 text-center">
+          <h1 className="text-4xl font-bold mb-4">Welcome to TravelExplorer</h1>
+          <p className="text-xl">
+            Your gateway to the best travel experiences around the world.
+          </p>
+        </div>
+      )}
       <div className="container mx-auto px-4 md:px-8">
         <h2 className="text-3xl font-semibold mb-8 text-center">About Us</h2>
         <p className="text-xl leading-relaxed text-center">
@@ -131,11 +157,11 @@ const LandingPage = () => {
                       <p className="text-green-500 mb-4">
                         Available Slots - {trip.availableSlots}
                       </p>
-                      <p className="text-sm font-bold text-black-500">
+                      <p className="text-sm font-bold text-black-500 mb-4">
                         Starting on{" "}
                         {new Date(trip.startDate).toLocaleDateString("en-GB")}
                       </p>
-                      <div className="mt-4 flex justify-between">
+                      <div className="px-6 mt-4 flex justify-between">
                         <button
                           onClick={() => handleViewDetails(trip._id)}
                           className="text-yellow-500 hover:underline"
@@ -155,9 +181,15 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-
       {modalOpen && (
         <TripDetailsModal trip={selectedTrip} onClose={handleCloseModal} />
+      )}
+      {paymentModalOpen && (
+        <PaymentModal
+          trip={selectedTrip}
+          onClose={() => setPaymentModalOpen(false)}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
       )}
     </div>
   );

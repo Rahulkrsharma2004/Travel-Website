@@ -66,8 +66,9 @@ const Navbar = () => {
       );
       console.log(response);
       if (response.data.message === "Logout successful!") {
-        setIsUserLoggedIn(false);
         localStorage.setItem("allUserData", "");
+        localStorage.setItem("isUserLoggedIn", false);
+        setIsUserLoggedIn(false);
         Cookies.remove("token");
         toast.success("User Logout successful!");
         alert("User Logout successful!");
@@ -141,13 +142,13 @@ const Navbar = () => {
             <>
               <button
                 onClick={handleUserLogin}
-                className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+                className="bg-blue-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
               >
                 User Login
               </button>
               <button
                 onClick={handleOrganizerLogin}
-                className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+                className="bg-blue-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
               >
                 Organizer Login
               </button>
