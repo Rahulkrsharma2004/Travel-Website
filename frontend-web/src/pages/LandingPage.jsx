@@ -10,8 +10,6 @@ const LandingPage = () => {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  console.log(trips.length)
-
   useEffect(() => {
     const fetchTrips = async () => {
       try {
@@ -40,13 +38,27 @@ const LandingPage = () => {
       setModalOpen(true);
     } catch (error) {
       console.error("Error fetching trip details:", error);
-      alert("Failed to load trip details.");
     }
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
     setSelectedTrip(null);
+  };
+
+  const handleBookNow = async (tripId) => {
+    try {
+      const response = await axios.post(
+        "https://travel-web-backend.vercel.app/bookings/book",
+        { tripId },
+        { withCredentials: true }
+      );
+      console.log(response);
+      alert("Trip booked successfully!");
+    } catch (error) {
+      console.error("Error booking trip:", error);
+      alert("Failed to book trip.");
+    }
   };
 
   return (
@@ -60,7 +72,7 @@ const LandingPage = () => {
 
       <div className="container mx-auto px-4 md:px-8">
         <h2 className="text-3xl font-semibold mb-8 text-center">About Us</h2>
-        <p className="text-xl leading-relaxed text-center ">
+        <p className="text-xl leading-relaxed text-center">
           TravelExplorer is a travel agency dedicated to bringing you amazing
           travel experiences. We offer guided tours, adventure trips, and
           cultural experiences around the world. Whether you're looking to relax
@@ -117,9 +129,7 @@ const LandingPage = () => {
                         Rs - {trip.price}
                       </p>
                       <p className="text-green-500 mb-4">
-                        Available Slots -
-                          {trip.availableSlots}
-                        
+                        Available Slots - {trip.availableSlots}
                       </p>
                       <p className="text-sm font-bold text-black-500">
                         Starting on{" "}
@@ -132,8 +142,11 @@ const LandingPage = () => {
                         >
                           View Details
                         </button>
-                        <button className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300">
-                          Add to Cart
+                        <button
+                          onClick={() => handleBookNow(trip._id)}
+                          className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300"
+                        >
+                          Book now
                         </button>
                       </div>
                     </div>

@@ -7,8 +7,13 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { setOrganizer, isOrganizerLoggedIn, setIsOrganizerLoggedIn } =
-    useContext(AuthContext);
+  const {
+    setOrganizer,
+    isOrganizerLoggedIn,
+    setIsOrganizerLoggedIn,
+    isUserLoggedIn,
+    setIsUserLoggedIn,
+  } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -47,53 +52,106 @@ const Navbar = () => {
   };
 
   const handleUserLogin = () => {
-    navigate("/login");
     localStorage.setItem("organizer", "false");
     setOrganizer(false);
+    navigate("/login");
+  };
+
+  const handleUserLogout = async () => {
+    try {
+      const response = await axios.post(
+        "https://travel-web-backend.vercel.app/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+      console.log(response);
+      if (response.data.message === "Logout successful!") {
+        setIsUserLoggedIn(false);
+        localStorage.setItem("allUserData", "");
+        Cookies.remove("token");
+        toast.success("User Logout successful!");
+        alert("User Logout successful!");
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error.message);
+      alert("Logout failed. Please try again.");
+    }
   };
 
   return (
     <nav className="bg-white p-4 shadow-lg ">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
-          <Link to="/" className="text-white text-2xl font-bold tracking-wide">
-            <img
-              src="https://explorertours.al/wp-content/uploads/2016/08/explorerlogo.png"
-              alt="Explorer Travel Logo"
-              className="w-[12rem] h-auto"
-            />
-          </Link>
+          {isOrganizerLoggedIn ? (
+            <div
+              className="text-white text-2xl font-bold tracking-wide"
+            >
+              <img
+                src="https://explorertours.al/wp-content/uploads/2016/08/explorerlogo.png"
+                alt="Explorer Travel Logo"
+                className="w-[12rem] h-auto"
+              />
+            </div>
+          ) : (
+            <Link
+              to="/"
+              className="text-white text-2xl font-bold tracking-wide"
+            >
+              <img
+                src="https://explorertours.al/wp-content/uploads/2016/08/explorerlogo.png"
+                alt="Explorer Travel Logo"
+                className="w-[12rem] h-auto"
+              />
+            </Link>
+          )}
         </div>
         <div className="hidden md:flex space-x-4">
           {isOrganizerLoggedIn ? (
-            <button
-              onClick={() => navigate("/organizer-dashboard")}
-              className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
-            >
-              Dashboard
-            </button>
+            <>
+              {/* <button
+                onClick={() => navigate("/organizer-dashboard")}
+                className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+              >
+                Dashboard
+              </button> */}
+              <button
+                onClick={handleOrganizerLogout}
+                className="bg-red-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+              >
+                Organizer Logout
+              </button>
+            </>
+          ) : isUserLoggedIn ? (
+            <>
+              <button
+                onClick={() => navigate("/user-dashboard")}
+                className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+              >
+                User Dashboard
+              </button>
+              <button
+                onClick={handleUserLogout}
+                className="bg-red-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+              >
+                User Logout
+              </button>
+            </>
           ) : (
-            <button
-              onClick={handleUserLogin}
-              className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
-            >
-              User Login
-            </button>
-          )}
-          {isOrganizerLoggedIn ? (
-            <button
-              onClick={handleOrganizerLogout}
-              className="bg-red-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
-            >
-              Organizer Logout
-            </button>
-          ) : (
-            <button
-              onClick={handleOrganizerLogin}
-              className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
-            >
-              Organizer Login
-            </button>
+            <>
+              <button
+                onClick={handleUserLogin}
+                className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+              >
+                User Login
+              </button>
+              <button
+                onClick={handleOrganizerLogin}
+                className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+              >
+                Organizer Login
+              </button>
+            </>
           )}
         </div>
         <div className="md:hidden">
@@ -141,34 +199,50 @@ const Navbar = () => {
         } md:hidden transition duration-500 ease-in-out`}
       >
         {isOrganizerLoggedIn ? (
-          <button
-            onClick={() => navigate("/organizer-dashboard")}
-            className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
-          >
-            Dashboard
-          </button>
+          <>
+            {/* <button
+              onClick={() => navigate("/organizer-dashboard")}
+              className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+            >
+              Dashboard
+            </button> */}
+            <button
+              onClick={handleOrganizerLogout}
+              className="bg-red-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+            >
+              Organizer Logout
+            </button>
+          </>
+        ) : isUserLoggedIn ? (
+          <>
+            <button
+              onClick={() => navigate("/user-dashboard")}
+              className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+            >
+              User Dashboard
+            </button>
+            <button
+              onClick={handleUserLogout}
+              className="bg-red-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+            >
+              User Logout
+            </button>
+          </>
         ) : (
-          <button
-            onClick={handleUserLogin}
-            className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
-          >
-            User Login
-          </button>
-        )}
-        {isOrganizerLoggedIn ? (
-          <button
-            onClick={handleOrganizerLogout}
-            className="bg-red-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
-          >
-            Organizer Logout
-          </button>
-        ) : (
-          <button
-            onClick={handleOrganizerLogin}
-            className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
-          >
-            Organizer Login
-          </button>
+          <>
+            <button
+              onClick={handleUserLogin}
+              className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+            >
+              User Login
+            </button>
+            <button
+              onClick={handleOrganizerLogin}
+              className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+            >
+              Organizer Login
+            </button>
+          </>
         )}
       </div>
     </nav>
