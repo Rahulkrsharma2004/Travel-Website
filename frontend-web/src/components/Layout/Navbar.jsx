@@ -110,12 +110,12 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-4">
           {isOrganizerLoggedIn ? (
             <>
-              {/* <button
+              <button
                 onClick={() => navigate("/organizer-dashboard")}
                 className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
               >
                 Dashboard
-              </button> */}
+              </button>
               <button
                 onClick={handleOrganizerLogout}
                 className="bg-red-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
@@ -201,12 +201,12 @@ const Navbar = () => {
       >
         {isOrganizerLoggedIn ? (
           <>
-            {/* <button
+            <button
               onClick={() => navigate("/organizer-dashboard")}
               className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
             >
               Dashboard
-            </button> */}
+            </button>
             <button
               onClick={handleOrganizerLogout}
               className="bg-red-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
