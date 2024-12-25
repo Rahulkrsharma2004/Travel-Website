@@ -52,7 +52,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4.5rem)]">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4.5rem)] p-6">
       <ToastContainer />
       <h1 className="text-3xl font-bold mb-8 text-yellow-700">
         {organizer ? "Organizer Register" : "User Register"}
@@ -61,7 +61,7 @@ const Signup = () => {
         <img
           src={loginImg}
           alt="Register illustration"
-          className="w-72 h-auto"
+          className="w-72 h-auto hidden md:block"
         />
         <form onSubmit={handleRegister} className="w-full md:w-80">
           <input
@@ -109,6 +109,7 @@ const Signup = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Signup;

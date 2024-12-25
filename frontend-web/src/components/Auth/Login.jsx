@@ -9,7 +9,7 @@ import AuthContext from "../../context/AuthContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { organizer, setIsUserLoggedIn, setIsOrganizerLoggedIn} =
+  const { organizer, setIsUserLoggedIn, setIsOrganizerLoggedIn } =
     useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -57,7 +57,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-[calc(100vh-4.5rem)] justify-center">
+    <div className="flex flex-col items-center min-h-[calc(100vh-4.5rem)] justify-center p-6">
       <ToastContainer />
       <h1 className="text-3xl font-bold mb-8 text-yellow-700">
         {organizer ? "Organizer Login" : "User Login"}
@@ -66,12 +66,9 @@ const Login = () => {
         <img
           src={registerImg}
           alt="Login illustration"
-          className="w-72 h-auto"
+          className="w-72 h-auto hidden md:block"
         />
-        <form
-          onSubmit={handleLogin} 
-          className="w-full md:w-80"
-        >
+        <form onSubmit={handleLogin} className="w-full md:w-80">
           <input
             type="email"
             className="border p-2 mb-4 w-full rounded"

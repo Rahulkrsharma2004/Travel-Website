@@ -7,7 +7,8 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { setOrganizer, isOrganizerLoggedIn,setIsOrganizerLoggedIn } = useContext(AuthContext);
+  const { setOrganizer, isOrganizerLoggedIn, setIsOrganizerLoggedIn } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -20,11 +21,15 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const handleOrganizerLogout = async() => {
-     try {
-      const response = await axios.post("https://travel-web-backend.vercel.app/auth/logout",{},{withCredentials: true});
+  const handleOrganizerLogout = async () => {
+    try {
+      const response = await axios.post(
+        "https://travel-web-backend.vercel.app/auth/logout",
+        {},
+        { withCredentials: true }
+      );
       console.log(response);
-      if(response.data.message === "Logout successful!"){
+      if (response.data.message === "Logout successful!") {
         setOrganizer(false);
         setIsOrganizerLoggedIn(false);
         localStorage.setItem("organizer", "false");
@@ -35,10 +40,10 @@ const Navbar = () => {
         alert("Organizer Logout successful!");
         navigate("/");
       }
-     } catch (error) {
-        console.log(error.message);
-        alert("Logout failed. Please try again.");
-     }
+    } catch (error) {
+      console.log(error.message);
+      alert("Logout failed. Please try again.");
+    }
   };
 
   const handleUserLogin = () => {
@@ -62,11 +67,11 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-4">
           {isOrganizerLoggedIn ? (
             <button
-            onClick={() => navigate("/organizer-dashboard") }
-            className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
-          >
-            Dashboard
-          </button>
+              onClick={() => navigate("/organizer-dashboard")}
+              className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+            >
+              Dashboard
+            </button>
           ) : (
             <button
               onClick={handleUserLogin}
@@ -135,18 +140,36 @@ const Navbar = () => {
           isOpen ? "block" : "hidden"
         } md:hidden transition duration-500 ease-in-out`}
       >
-        <button
-          onClick={handleUserLogin}
-          className="block text-black p-2 hover:bg-yellow-200 transition duration-300 ease-in-out"
-        >
-          User Login
-        </button>
-        <button
-          onClick={handleOrganizerLogin}
-          className="block text-black p-2 hover:bg-yellow-200 transition duration-300 ease-in-out"
-        >
-          Organizer Login
-        </button>
+        {isOrganizerLoggedIn ? (
+          <button
+            onClick={() => navigate("/organizer-dashboard")}
+            className="bg-green-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+          >
+            Dashboard
+          </button>
+        ) : (
+          <button
+            onClick={handleUserLogin}
+            className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+          >
+            User Login
+          </button>
+        )}
+        {isOrganizerLoggedIn ? (
+          <button
+            onClick={handleOrganizerLogout}
+            className="bg-red-200 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+          >
+            Organizer Logout
+          </button>
+        ) : (
+          <button
+            onClick={handleOrganizerLogin}
+            className="bg-blue-300 hover:bg-yellow-200 px-4 py-2 rounded transition duration-300 ease-in-out"
+          >
+            Organizer Login
+          </button>
+        )}
       </div>
     </nav>
   );
