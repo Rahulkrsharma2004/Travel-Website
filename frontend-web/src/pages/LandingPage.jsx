@@ -10,6 +10,8 @@ const LandingPage = () => {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
+  console.log(trips.length)
+
   useEffect(() => {
     const fetchTrips = async () => {
       try {
@@ -72,7 +74,7 @@ const LandingPage = () => {
           <h2 className="text-3xl font-semibold mb-12">Upcoming Trips</h2>
           <div className="grid px-5 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {loading
-              ? Array(6)
+              ? Array(trips.length || 6)
                   .fill()
                   .map((_, index) => (
                     <div
