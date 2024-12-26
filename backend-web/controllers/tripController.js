@@ -1,7 +1,7 @@
 const Trip = require('../models/Trip');
 
 exports.getTrips = async (req, res) => {
-  const trips = await Trip.find();
+  const trips = await Trip.find({organizer: req.user._id}).populate('trip');
   res.json(trips);
 };
 
