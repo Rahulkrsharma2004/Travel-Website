@@ -27,7 +27,6 @@ const LandingPage = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching trips:", error);
-        alert("Failed to load trips.");
       }
     };
 
