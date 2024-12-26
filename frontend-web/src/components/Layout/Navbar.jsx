@@ -41,7 +41,6 @@ const Navbar = () => {
         setIsOrganizerLoggedIn(false);
         localStorage.setItem("organizer", "false");
         localStorage.setItem("isOrganizerLoggedIn", false);
-        localStorage.setItem("allOrganizerData", "");
         Cookies.remove("token");
         toast.success("Organizer Logout successful!");
         alert("Organizer Logout successful!");
@@ -68,7 +67,6 @@ const Navbar = () => {
       );
       console.log(response);
       if (response.data.message === "Logout successful!") {
-        localStorage.setItem("allUserData", "");
         localStorage.setItem("isUserLoggedIn", false);
         setIsUserLoggedIn(false);
         Cookies.remove("token");
