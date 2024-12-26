@@ -1,9 +1,14 @@
 const Trip = require('../models/Trip');
 
 exports.getTrips = async (req, res) => {
-  const trips = await Trip.find({organizer: req.user._id}).populate('trip');
+  const trips = await Trip.find();
   res.json(trips);
 };
+
+// exports.getTrips = async (req, res) => {
+//   const trips = await Trip.find({organizer: req.user._id}).populate('trip');
+//   res.json(trips);
+// };
 
 exports.getTripById = async (req, res) => {
   const trip = await Trip.findById(req.params.id);
