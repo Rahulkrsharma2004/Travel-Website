@@ -4,10 +4,10 @@ const { protect, organizer } = require('../middleware/authMiddleware');
 const router = express.Router();
 
 router.get('/', getTrips);
-router.post('/create', protect, organizer, createTrip);
+router.post('/create', protect, createTrip);
 router.get('/:id', getTripById);
-router.put('/update/:id', protect, organizer, updateTrip);
-router.delete('/delete/:id', protect, organizer, deleteTrip);
+router.put('/update/:id', protect, updateTrip);
+router.delete('/delete/:id', protect, deleteTrip);
 
 module.exports = router;
 

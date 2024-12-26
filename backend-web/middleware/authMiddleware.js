@@ -19,10 +19,10 @@ exports.protect = async (req, res, next) => {
   }
 };
 
-exports.organizer = (req, res, next) => {
-  if (req.user && req.user.isOrganizer) {
-    next();
-  } else {
-    res.status(401).json({ message: "Not authorized as an organizer" });
-  }
-};
+// exports.organizer = (req, res, next) => {
+//   if (req.user && req.user.isOrganizer) {
+//     next();
+//   } else {
+//     res.status(401).json({ message: "Not authorized as an organizer" });
+//   }
+// };
