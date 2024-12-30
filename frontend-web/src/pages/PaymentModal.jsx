@@ -15,7 +15,8 @@ const PaymentModal = ({ trip, onClose, onPaymentSuccess }) => {
   }, []);
 
   const generateCaptcha = () => {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let captcha = "";
     for (let i = 0; i < 6; i++) {
       captcha += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -38,8 +39,7 @@ const PaymentModal = ({ trip, onClose, onPaymentSuccess }) => {
       newErrors.expiryDate = "Invalid Expiry Date.";
 
     if (!cvv) newErrors.cvv = "CVV is required.";
-    else if (!cvvPattern.test(cvv))
-      newErrors.cvv = "Invalid CVV.";
+    else if (!cvvPattern.test(cvv)) newErrors.cvv = "Invalid CVV.";
 
     if (!inputCaptcha) newErrors.captcha = "CAPTCHA is required.";
     else if (inputCaptcha !== captcha)
@@ -71,11 +71,15 @@ const PaymentModal = ({ trip, onClose, onPaymentSuccess }) => {
             onChange={(e) => setCardNumber(e.target.value)}
             className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           />
-          {errors.cardNumber && <p className="text-red-500 text-sm">{errors.cardNumber}</p>}
+          {errors.cardNumber && (
+            <p className="text-red-500 text-sm">{errors.cardNumber}</p>
+          )}
         </div>
         <div className="mb-4 flex justify-between">
           <div className="w-1/2 pr-2">
-            <label className="block text-sm font-medium mb-1">Expiry Date</label>
+            <label className="block text-sm font-medium mb-1">
+              Expiry Date
+            </label>
             <input
               type="text"
               value={expiryDate}
@@ -83,7 +87,9 @@ const PaymentModal = ({ trip, onClose, onPaymentSuccess }) => {
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
               placeholder="MM/YYYY"
             />
-            {errors.expiryDate && <p className="text-red-500 text-sm">{errors.expiryDate}</p>}
+            {errors.expiryDate && (
+              <p className="text-red-500 text-sm">{errors.expiryDate}</p>
+            )}
           </div>
           <div className="w-1/2 pl-2">
             <label className="block text-sm font-medium mb-1">CVV</label>
@@ -102,10 +108,10 @@ const PaymentModal = ({ trip, onClose, onPaymentSuccess }) => {
             <div
               className="bg-gray-200 px-3 py-2 rounded mr-2 text-lg font-bold tracking-wider"
               style={{
-                backgroundImage: 'linear-gradient(45deg, #f3ec78, #af4261)',
-                color: '#fff',
-                letterSpacing: '5px',
-                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
+                backgroundImage: "linear-gradient(45deg, #f3ec78, #af4261)",
+                color: "#fff",
+                letterSpacing: "5px",
+                textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
               }}
             >
               {captcha}
@@ -116,14 +122,18 @@ const PaymentModal = ({ trip, onClose, onPaymentSuccess }) => {
             >
               <MdOutlineRefresh className="text-2xl" />
             </button>
-          </div>
+            <div className="ml-2">
           <input
             type="text"
             value={inputCaptcha}
             onChange={(e) => setInputCaptcha(e.target.value)}
             className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           />
-          {errors.captcha && <p className="text-red-500 text-sm">{errors.captcha}</p>}
+          {errors.captcha && (
+            <p className="text-red-500 text-sm">{errors.captcha}</p>
+          )}
+          </div>
+          </div>
         </div>
         <div className="flex justify-end mt-4">
           <button
@@ -134,7 +144,9 @@ const PaymentModal = ({ trip, onClose, onPaymentSuccess }) => {
           </button>
           <button
             onClick={handlePayment}
-            className={`px-4 py-2 bg-green-500 text-white rounded transition duration-300 focus:outline-none focus:ring focus:ring-green-300 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`px-4 py-2 bg-green-500 text-white rounded transition duration-300 focus:outline-none focus:ring focus:ring-green-300 ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             disabled={isLoading}
           >
             {isLoading ? "Processing..." : "Pay Now"}
