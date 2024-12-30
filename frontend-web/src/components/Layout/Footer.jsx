@@ -8,21 +8,17 @@ const Footer = () => {
       <div className="container mx-auto px-6 md:px-12">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
           
-          {/* Logo Section */}
           <div className="text-center md:text-left">
             <h2 className="text-4xl font-bold text-black">TravelExplorer</h2>
             <p className="text-sm mt-2">Explore the world with us.</p>
           </div>
           
-          {/* Navigation Links */}
           <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8">
             <Link to="/" className="hover:text-yellow-200 transition duration-300">Home</Link>
-            <Link to="/about" className="hover:text-yellow-200 transition duration-300">About</Link>
-            <Link to="/services" className="hover:text-yellow-200 transition duration-300">Services</Link>
+            <Link to="/" className="hover:text-yellow-200 transition duration-300">About</Link>
             <Link to="/contact" className="hover:text-yellow-200 transition duration-300">Contact</Link>
           </div>
           
-          {/* Social Media Section */}
           <div className="flex space-x-6">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-black hover:text-yellow-200 transition duration-300">
               <FaFacebook size={24} />
@@ -39,7 +35,6 @@ const Footer = () => {
           </div>
         </div>
         
-        {/* Contact Section */}
         <div className="mt-8 text-center md:text-left">
           <div className="flex justify-center md:justify-start space-x-6">
             <div className="flex items-center space-x-2">
@@ -54,7 +49,6 @@ const Footer = () => {
         </div>
       </div>
       
-      {/* Footer Bottom */}
       <div className="text-center mt-6 text-sm text-black">
         <p>&copy; 2024 TravelExplorer. All Rights Reserved.</p>
       </div>

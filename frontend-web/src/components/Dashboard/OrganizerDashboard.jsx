@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TripForm from '../Trip/TripForm';
 import TripList from '../Trip/TripList';
+// import AuthContext from '../../context/AuthContext';
 
 const OrganizerDashboard = () => {
   const [trips, setTrips] = useState([]);
   const [selectedTrip, setSelectedTrip] = useState(null);
+  // const {organizerID} = useContext(AuthContext);
 
   useEffect(() => {
     fetchTrips();
@@ -14,11 +16,10 @@ const OrganizerDashboard = () => {
   const fetchTrips = async () => {
     try {
       const response = await axios.get('https://travel-web-backend.vercel.app/trips', { withCredentials: true });
-      console.log(response.data);
+      // console.log("organizerData",response.data[6].organizer);
       setTrips(response.data);
     } catch (error) {
       console.error('Error fetching trips:', error);
-      alert('Failed to load trips.');
     }
   };
 
